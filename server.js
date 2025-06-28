@@ -39,8 +39,8 @@ app.post("/api/listings", (req, res) => {
 
 // GET /api/listings - Get listings with pagination and optional name filter
 app.get("/api/listings", (req, res) => {
-  const page = req.query.page;
-  const perPage = req.query.perPage;
+  const page = parseInt(req.query.page) || 1;
+  const perPage = parseInt(req.query.perPage) || 10;
   const name = req.query.name;
 
   db.getAllListings(page, perPage, name).then((listings) => {
@@ -49,7 +49,6 @@ app.get("/api/listings", (req, res) => {
     res.status(500).json({ message: `Error fetching listings: ${err}` });
   });
 });
-
 // GET /api/listings/:id - Get single listing by ID
 app.get("/api/listings/:id", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // Force CORS manually
